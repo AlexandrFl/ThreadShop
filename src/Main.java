@@ -1,8 +1,8 @@
 
 public class Main {
     private static final int BUYER_COUNT = 10;
-    public static final int BUYER_SLEEP = 1000;
-    public static final int AUTOMAKER_SLEEP = 2000;
+    private static final int BUYER_SLEEP = 1000;
+    private static final int AUTOMAKER_SLEEP = 2000;
 
     public static void main(String[] args) throws InterruptedException {
         final CarDealership carDealership = new CarDealership();

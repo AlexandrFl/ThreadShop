@@ -5,8 +5,8 @@ public class Automaker {
     private final CarDealership carDealership;
     public final int SELL_SLEEP = 500;
     public final int DISTILLATION_SLEEP = 2000;
-    private final ReentrantLock LOCK = new ReentrantLock(true);
-    private final Condition condition = LOCK.newCondition();
+    private ReentrantLock lock = new ReentrantLock(true);
+    private Condition condition = lock.newCondition();
 
     public Automaker(CarDealership carDealership) {
         this.carDealership = carDealership;
@@ -14,7 +14,7 @@ public class Automaker {
 
     public Audi sellCar() {
         try {
-            LOCK.lock();
+            lock.lock();
             while (carDealership.getAudi().size() == 0) {
                 System.out.println("❌ Авто нет в наличии. Покупатель " + Thread.currentThread().getName() + " ушел без авто ❌");
                 condition.await();
@@ -25,7 +25,7 @@ public class Automaker {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            LOCK.unlock();
+            lock.unlock();
         }
         return carDealership.getAudi().
                 remove(0);
@@ -33,7 +33,7 @@ public class Automaker {
 
     public void distillation() {
         try {
-            LOCK.lock();
+            lock.lock();
             System.out.println("Автосалон принимает авто");
             Thread.sleep(DISTILLATION_SLEEP);
             carDealership.getAudi().add(new Audi());
@@ -42,7 +42,7 @@ public class Automaker {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            LOCK.unlock();
+            lock.unlock();
         }
     }
 }
